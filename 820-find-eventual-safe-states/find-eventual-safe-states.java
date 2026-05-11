@@ -25,21 +25,65 @@ class Solution {
         check[node]=1;
         return false;
     }
+    // function for dfs call
+    // public List<Integer> eventualSafeNodes(int[][] graph) {
+    //     int V = graph.length;
+    //     int[] vis= new int[V];
+    //     int[] check= new int[V];
+
+    //     for(int i=0;i<V;i++){
+    //         if(vis[i]==0){
+    //             dfs(i,graph,vis,check);
+    //         }
+    //     }
+
+    //     List<Integer> ans = new ArrayList<>();
+    //     for(int i=0;i<V;i++){
+    //         if(check[i] == 1)ans.add(i);
+    //     }
+    //     return ans;
+    // }
+
+    // Same question using Kahn's algorithm(BFS)
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int V = graph.length;
-        int[] vis= new int[V];
-        int[] check= new int[V];
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
 
+        for(int i=0;i<V;i++)adj.add(new ArrayList<>());
+
+        // Reverse the graph
         for(int i=0;i<V;i++){
-            if(vis[i]==0){
-                dfs(i,graph,vis,check);
+            for(int it:graph[i]){
+                // Initailly    i --> it
+                // Finally      it --> i
+                adj.get(it).add(i);
             }
         }
 
-        List<Integer> ans = new ArrayList<>();
+        // Now perform Topological sort
+        List<Integer> topo=new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+        int[] indegree = new int[V];
         for(int i=0;i<V;i++){
-            if(check[i] == 1)ans.add(i);
+            for(int it:adj.get(i)){
+                indegree[it]++;
+            }
         }
-        return ans;
+        
+        for(int i=0;i<V;i++){
+            if(indegree[i] == 0)q.add(i);
+        }
+        
+        while(!q.isEmpty()){
+            int node = q.poll();
+            topo.add(node);
+            // reduce indegree of its neighbours 
+            for(int it:adj.get(node)){
+                indegree[it]--;
+                if(indegree[it] == 0)q.add(it);
+            }
+        }
+        Collections.sort(topo);
+        return topo;
     }
 }
