@@ -37,26 +37,50 @@ class Solution {
     // }
 
     // Tabulation
+    // public int minPathSum(int[][] grid) {
+    //     int m=grid.length;
+    //     int n=grid[0].length;
+    //     int[][] path=new int[m][n];
+
+    //     for(int i=0;i<m;i++){
+    //         for(int j=0;j<n;j++){
+    //             if(i == 0 && j == 0) path[0][0]=grid[0][0];
+    //             else{
+    //                 int up=Integer.MAX_VALUE;
+    //                 int left=Integer.MAX_VALUE;
+    //                 if(i > 0) up=path[i-1][j];
+    //                 if(j > 0) left=path[i][j-1];
+    //                 int min =Math.min(up,left);
+    //                 path[i][j] = grid[i][j] + min;
+    //             }
+    //         }
+    //     }
+    //     return path[m-1][n-1];
+    // }
+
     public int minPathSum(int[][] grid) {
-        int m=grid.length;
-        int n=grid[0].length;
-        int[][] path=new int[m][n];
-        for(int[] it:path){
-            Arrays.fill(it,Integer.MAX_VALUE);
-        }
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(i == 0 && j == 0) path[0][0]=grid[0][0];
-                else{
-                    int up=Integer.MAX_VALUE;
-                    int left=Integer.MAX_VALUE;
-                    if(i > 0) up=path[i-1][j];
-                    if(j > 0) left=path[i][j-1];
-                    int min =Math.min(up,left);
-                    path[i][j] = grid[i][j] + min;
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[] prev = new int[n];
+
+        for (int i = 0; i < m; i++) {
+            int[] curr = new int[n];
+
+            for (int j = 0; j < n; j++) {
+
+                if (i == 0 && j == 0) {
+                    curr[j] = grid[i][j];
+                } else {
+                    int up = (int)1e9;
+                    int left = (int)1e9;
+                    if (i > 0) up = prev[j];
+                    if (j > 0) left = curr[j - 1];
+                    curr[j] = grid[i][j] + Math.min(up, left);
                 }
             }
+            prev = curr;
         }
-        return path[m-1][n-1];
+        return prev[n - 1];
     }
 }
