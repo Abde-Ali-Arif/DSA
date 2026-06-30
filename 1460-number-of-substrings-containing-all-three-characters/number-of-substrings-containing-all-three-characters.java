@@ -7,9 +7,7 @@ class Solution {
         while(r<s.length()){
             lastSeen[s.charAt(r) - 'a']=r;
             
-            int min = lastSeen[0];
-            if (lastSeen[1] < min) min = lastSeen[1];
-            if (lastSeen[2] < min) min = lastSeen[2];
+            int min =Math.min(Math.min(lastSeen[0],lastSeen[1]),lastSeen[2]);
             cnt += min+1;
             r++;
         }
