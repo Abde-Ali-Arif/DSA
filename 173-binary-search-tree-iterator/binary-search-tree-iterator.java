@@ -15,6 +15,8 @@
  */
 class BSTIterator {
 
+    // T.C.-> O(1)    S.C.-> O(H)
+
     Stack<TreeNode> st;
 
     public BSTIterator(TreeNode root) {
@@ -24,10 +26,8 @@ class BSTIterator {
     
     public int next() {
         TreeNode curr=st.pop();
-        int val=curr.val;
-        curr=curr.right;
-        pushAll(curr);
-        return val;
+        pushAll(curr.right);
+        return curr.val;
     }
     
     public boolean hasNext() {
